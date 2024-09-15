@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/InventoryDeath.iml" filepath="$PROJECT_DIR$/InventoryDeath.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NotDeath.iml" filepath="$PROJECT_DIR$/NotDeath.iml" />
     </modules>
   </component>
 </project>

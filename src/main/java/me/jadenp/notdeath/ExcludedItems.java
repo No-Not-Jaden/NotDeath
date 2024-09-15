@@ -1,11 +1,11 @@
-package me.jadenp.inventorydeath;
+package me.jadenp.notdeath;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -20,7 +20,7 @@ public class ExcludedItems {
      * Reads the excluded items from the excluded_items.txt file.
      * @param plugin Plugin that holds the file.
      */
-    public ExcludedItems(InventoryDeath plugin) {
+    public ExcludedItems(NotDeath plugin) {
         File excludedItems = new File(plugin.getDataFolder() + File.separator + "excluded_items.txt");
         // create file if it doesn't exist already
         if (!excludedItems.exists())
@@ -48,7 +48,7 @@ public class ExcludedItems {
                 line = reader.readLine();
             }
         } catch (IOException e) {
-            Bukkit.getLogger().warning("[InventoryDeath] Error reading excluded_items.txt");
+            Bukkit.getLogger().warning("[NotDeath] Error reading excluded_items.txt");
             Bukkit.getLogger().throwing(ExcludedItems.class.getName(), "Constructor", e);
         }
     }
@@ -82,7 +82,7 @@ public class ExcludedItems {
         try {
             return Material.valueOf(lineData[0].toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
-            Bukkit.getLogger().warning("[InventoryDeath] Unknown material \"" + lineData[0] + "\" in excluded_items.txt");
+            Bukkit.getLogger().warning("[NotDeath] Unknown material \"" + lineData[0] + "\" in excluded_items.txt");
             return null;
         }
     }
@@ -97,7 +97,7 @@ public class ExcludedItems {
         try {
             return Integer.parseInt(lineData[1]);
         } catch (NumberFormatException e) {
-            Bukkit.getLogger().warning("[InventoryDeath] Invalid custom model of \"" + lineData[1] + "\" for material \"" + lineData[0] + "\"");
+            Bukkit.getLogger().warning("[NotDeath] Invalid custom model of \"" + lineData[1] + "\" for material \"" + lineData[0] + "\"");
             return -1;
         }
     }

@@ -1,9 +1,25 @@
 # Whether inventories will be cleared on death (true).
 enabled: true
-# Whether experience will be cleared on death (true), or dropped like normal (false).
-clear-exp: false
+# Settings for dropped experience
+# Note: experience levels are not linear progression. lvl 2-3 has a lot less experience than level 29-30
+experience:
+  # What happens to experience on death
+  # DROP - exp is dropped on death
+  # KEEP - exp is kept on death
+  # REMOVE - exp is removed
+  # Alternatively, you can specify a number instead for part DROP and part KEEP
+  # (number) - (number) percent of exp is dropped, and the rest kept
+  # ex: 25 -> 75% of exp is dropped on death, and 25% is kept after the player respawns
+  action: DROP
+  # How much exp is lost on death.
+  # DEFAULT uses Minecraft's default calculation with the maximum being 7 levels when exp is dropped. All experience will be kept if the action is set to KEEP.
+  # Specify a number to change the ratio of exp lost
+  # ex: 20 -> 20% of exp is lost, 80% is kept
+  lost-exp: DEFAULT
 # Whether the excluded contents will be kept in their inventory when they die (true), or dropped to the ground (false).
-keep-inventory: false
+keep-inventory: true
+# If keep-inventory is true, this controls whether the items not kept in the inventory are deleted (true), or dropped to the ground (false).
+delete-included-items: false
 # Filter worlds to clear inventories in.
 # By default, all worlds will clear inventories except the one named "SafeWorldName"
 world-filter:
