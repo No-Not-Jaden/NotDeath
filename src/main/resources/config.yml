@@ -1,0 +1,14 @@
+# Whether inventories will be cleared on death (true).
+enabled: true
+# Whether experience will be cleared on death (true), or dropped like normal (false).
+clear-exp: false
+# Whether the excluded contents will be kept in their inventory when they die (true), or dropped to the ground (false).
+keep-inventory: false
+# Filter worlds to clear inventories in.
+# By default, all worlds will clear inventories except the one named "SafeWorldName"
+world-filter:
+  # Change this filter to a whitelist (true) or blacklist (false).
+  whitelist: false
+  # Worlds in the filter. This is case-sensitive.
+  worlds:
+    - SafeWorldName

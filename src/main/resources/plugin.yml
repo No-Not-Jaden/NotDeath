@@ -1,0 +1,16 @@
+name: InventoryDeath
+version: '${project.version}'
+main: me.jadenp.inventorydeath.InventoryDeath
+api-version: '1.13'
+author: Not_Jaden
+commands:
+  InventoryDeath:
+    description: Used to reload the plugin.
+    permission: inventorydeath.admin
+permissions:
+  inventorydeath.admin:
+    description: Permission to use the reload command.
+    default: op
+  inventorydeath.player:
+    description: Players with this default permission will have their inventory removed on death.
+    default: true
