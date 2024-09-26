@@ -1,5 +1,9 @@
 # Whether inventories will be cleared on death (true).
 enabled: true
+# Whether containers that hold items like shulkers or bundles will be searched through for excluded items when the player dies (true).
+# If the container is not excluded, any excluded items in the container will be added to the player's inventory or dropped to the ground if full.
+# If the container is excluded, excluded items in the container will be taken out.
+open-containers: true
 # Settings for dropped experience
 # Note: experience levels are not linear progression. lvl 2-3 has a lot less experience than level 29-30
 experience:

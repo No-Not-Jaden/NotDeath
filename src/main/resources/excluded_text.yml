@@ -1,0 +1,15 @@
+# You can name this configuration section anything
+example:
+  # Item must contain this name.
+  name: '&0&lNightBringer'
+  # Item must contain this lore
+  lore:
+    - '&8&oThis sword can bring'
+    - '&8&onight to anyone.'
+  # Item must be this material
+  material: NETHERITE_SWORD
+# Example of leaving some configuration out.
+# This will only look for items with the specified name.
+example2:
+  # Hex can be used in names.
+  name: '<#a3bbe3>&lFluffy Cloud'

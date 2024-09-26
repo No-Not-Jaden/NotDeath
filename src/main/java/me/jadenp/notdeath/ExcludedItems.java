@@ -2,6 +2,7 @@ package me.jadenp.notdeath;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,12 +16,42 @@ import java.util.*;
 public class ExcludedItems {
     private final List<Material> excludedMaterials = new ArrayList<>();
     private final Map<Material, List<Integer>> excludedCustomModelData = new EnumMap<>(Material.class);
+    private final List<ExcludedText> excludedTexts = new ArrayList<>();
+
+    /**
+     * Reads configuration data for excluded items.
+     * @param plugin Plugin that holds the data.
+     */
+    public ExcludedItems(NotDeath plugin) {
+        readExcludedItems(plugin);
+        readExcludedTexts(plugin);
+    }
+
+    /**
+     * Reads the excluded texts from the plugin's config.yml file.
+     * @param plugin Plugin that holds the file
+     */
+    private void readExcludedTexts(NotDeath plugin) {
+        excludedTexts.clear();
+        File excludedTextFile = new File(plugin.getDataFolder() + File.separator + "excluded_text.yml");
+        // create file if it doesn't exist already
+        if (!excludedTextFile.exists())
+            plugin.saveResource("excluded_text.yml", false);
+
+        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(excludedTextFile);
+        // get all the keys in the configuration section
+        for (String key : configuration.getKeys(false)) {
+            excludedTexts.add(new ExcludedText(Objects.requireNonNull(configuration.getConfigurationSection(key))));
+        }
+    }
 
     /**
      * Reads the excluded items from the excluded_items.txt file.
      * @param plugin Plugin that holds the file.
      */
-    public ExcludedItems(NotDeath plugin) {
+    private void readExcludedItems(NotDeath plugin) {
+        excludedMaterials.clear();
+        excludedCustomModelData.clear();
         File excludedItems = new File(plugin.getDataFolder() + File.separator + "excluded_items.txt");
         // create file if it doesn't exist already
         if (!excludedItems.exists())
@@ -108,7 +139,14 @@ public class ExcludedItems {
      * @return True if the item should be deleted.
      */
     public boolean isItemIncluded(@Nonnull ItemStack itemStack) {
-        return !excludedMaterials.contains(itemStack.getType()) &&
-                (itemStack.getItemMeta() == null || !itemStack.getItemMeta().hasCustomModelData() || !excludedCustomModelData.containsKey(itemStack.getType()) || !excludedCustomModelData.get(itemStack.getType()).contains(itemStack.getItemMeta().getCustomModelData()));
+        if (excludedMaterials.contains(itemStack.getType()) ||
+                (itemStack.getItemMeta() != null && itemStack.getItemMeta().hasCustomModelData() && excludedCustomModelData.containsKey(itemStack.getType()) && excludedCustomModelData.get(itemStack.getType()).contains(itemStack.getItemMeta().getCustomModelData()))) {
+            return false;
+        }
+        for (ExcludedText excludedText : excludedTexts) {
+            if (excludedText.isItemExcluded(itemStack))
+                return false;
+        }
+        return true;
     }
 }

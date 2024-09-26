@@ -13,6 +13,7 @@ import java.util.Objects;
 public final class NotDeath extends JavaPlugin{
 
     private boolean enabled;
+    private boolean openContainers;
     private boolean keepInventory;
     private boolean deleteIncludedItems;
     private boolean worldFilterWhitelist;
@@ -57,6 +58,7 @@ public final class NotDeath extends JavaPlugin{
 
         // load config options
         enabled = getConfig().getBoolean("enabled");
+        openContainers = getConfig().getBoolean("open-containers");
         worldFilterWhitelist = getConfig().getBoolean("world-filter.whitelist");
         worldFilterList = getConfig().getStringList("world-filter.worlds");
         keepInventory = getConfig().getBoolean("keep-inventory");
@@ -88,6 +90,10 @@ public final class NotDeath extends JavaPlugin{
 
     public ExcludedItems getExcludedItems() {
         return excludedItems;
+    }
+
+    public boolean isOpenContainers() {
+        return openContainers;
     }
 
     public boolean shouldClearInventory(Player player) {
