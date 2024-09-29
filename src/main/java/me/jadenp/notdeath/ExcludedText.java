@@ -9,10 +9,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class ExcludedText {
     private final String name;
@@ -30,7 +30,7 @@ public class ExcludedText {
             // multiple lines
             List<String> tempLore = new ArrayList<>();
             for (String text : configuration.getStringList("lore")) {
-                tempLore.add(hex(text));
+                tempLore.add(hex(text.replace("&o", "")));
             }
             lore = Collections.unmodifiableList(tempLore);
         } else {
@@ -65,8 +65,41 @@ public class ExcludedText {
             return false;
         // check if all the valid fields match
         return (material == null || itemStack.getType() == material)
-                && (name.isEmpty() || meta.getDisplayName().contains(name))
-                && (lore.isEmpty() || (meta.getLore() != null && new HashSet<>(meta.getLore()).containsAll(lore)));
+                && (name.isEmpty() || uppercaseChatColors(meta.getDisplayName()).contains(uppercaseChatColors(name)))
+                && (lore.isEmpty() || (meta.getLore() != null && listContainsAll(meta.getLore(), lore)));
+    }
+
+    /**
+     * Check if a list contains all the lines in the other list.
+     * @param baseLore Base Lore that can have extra lines.
+     * @param containingLore The lore that baseLore must contain.
+     * @return True if the baseLore has containingLore.
+     */
+    private boolean listContainsAll(List<String> baseLore, List<String> containingLore) {
+        baseLore = baseLore.stream().map(line -> line.replace(ChatColor.ITALIC + "", "")).collect(Collectors.toList());
+        for (String line : containingLore) {
+            boolean containes = false;
+            for (String baseLine : baseLore) {
+                if (baseLine.contains(line)) {
+                    containes = true;
+                    break;
+                }
+            }
+            if (!containes) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private String uppercaseChatColors(String text) {
+        char[] textChars = text.toCharArray();
+        for (int i = 0; i < textChars.length-1; i++) {
+            if (textChars[i] == ChatColor.COLOR_CHAR) {
+                textChars[i+1] = Character.toUpperCase(textChars[i+1]);
+            }
+        }
+        return new String(textChars);
     }
 
     /**
